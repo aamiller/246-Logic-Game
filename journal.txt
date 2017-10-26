@@ -1,0 +1,5 @@
+10/25/17 6pm
+Created inital files, copying them directly from an old exercise so it will be really easy to link the .js file.
+Thought about using JavaScript canvas, but I've used similar things to make games before and I want to go in a direction with more html. I've settled on making the little known logic game, 2,4,6, and hope that the complexity of my project will come from the number of cases and how stuff is handled in the dom.
+Created css folder and file, gotta organize those somehow!
+
