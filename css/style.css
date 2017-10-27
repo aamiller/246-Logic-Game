@@ -1,5 +1,31 @@
 * {
-	background-color: #999999;
+	 text-align: center; /* Center in IE */
+}
+
+body {
+	background-color: #333333;
+	 margin: 0 20% 0 20%;
+
+}
+
+header {
+	background-color: #666666;
+}
+
+header > p {
+	padding-bottom: 1%;
+}
+
+main {
+	padding-top: 1%;
+	background-color: #888888;
+}
+
+h1 {
+	font-size: 5em;
+}
+h2 {
+	font-size: 3em;
 }
 
 .game-container {
@@ -7,11 +33,8 @@
 }
 
 .cases-container {
-
-}
-
-.case {
 	display: inline;
+
 }
 
 #case-1 {}
@@ -22,13 +45,29 @@
 #case-6 {}
 #case-7 {}
 
-.base-case-container {}
+.base-case-container {
+	padding-top: 2%;
+	padding-bottom: 2%;
+}
 
-#current-base-case {}
+#base-case-title {
 
-.guess-input-container {}
+}
 
-.form-group {}
+#current-base-case {
+	font-size: 3em;
+	font-weight: 800;
+}
+
+.guess-input-container {
+	padding-bottom: 2%;
+}
+
+.form-group input {
+	margin-right: 1em;
+	margin-left: 1em;
+	width: 4em;
+}
 
 #task-input-1 {}
 #task-input-2 {}
@@ -41,14 +80,43 @@
 .instructions-container {}
 
 
-.game-details-container {}
+.guesses-container p {
+	display: inline;
+	}
+.guess-holder {
+	display: inline;
+}
+#correct-guesses {
+
+}
+#wrong-guesses {
+
+}
+
+#guess-label {
+	display: block;
+}
+
+
+.game-details-container {
+
+}
 
 .details-container {
 	display: inline;	
 }
 
-#timer-container {}
-#case-completed {}
-#average-time-per-case-container {}
+#timer-container {
+	display: inline;
+
+}
+#case-completed {
+	display: inline;
+
+}
+#average-time-per-case-container {
+	display: inline;
+
+}
 
 

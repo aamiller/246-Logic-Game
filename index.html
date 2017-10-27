@@ -1,52 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="author" content="Adele Miller">
- <meta name="description" content="description of your page">
- <link rel="stylesheet" href="css/style.css">
- <title>2 4 6</title>
+	<meta charset="UTF-8">
+	<meta name="author" content="Adele Miller">
+	<meta name="description" content="description of your page">
+	<title>2 4 6</title>
+
+  <!-- Bootstrap for styling -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-  <header>
-    <h1> 2 4 6</h1>
-    <p>A logic game for the ages</p>
-  </header>
-  <div class="game-container">
-    <div class="cases-container">
-      <div class="case" id="case-1">Level 1</div>
-      <div class="case" id="case-2">Level 2</div>
-      <div class="case" id="case-3">Level 3</div>
-      <div class="case" id="case-4">Level 5</div>
-      <div class="case" id="case-5">Level 6</div>
-      <div class="case" id="case-6">Level 7</div>
-    </div>
+	<header>
+		<h1> 2 4 6</h1>
+		<p>A logic game for the ages</p>
+	</header>
+	<main>
+		<div class="game-container">
+			<div class="cases-container">
+				<button type="button" id="case-1" class="btn btn-info">Level 1</button>
+				<button type="button" id="case-2" class="btn btn-info">Level 2</button>
+				<button type="button" id="case-3" class="btn btn-info">
+				Level 3</button>
+				<button type="button" id="case-4" class="btn btn-info">Level 4</button>
+				<button type="button" id="case-5" class="btn btn-info">Level 5</button>
+				<button type="button" id="case-6" class="btn btn-info">Level 6</button>
+				<button type="button" id="case-7" class="btn btn-info">Level 7</button>
+			</div>
 
-    <div class="base-case-container">
-      <p id="current-base-case">2 4 6</p>
+			<div class="base-case-container">
+				<h2 id="base-case-title">Current Base Case</h2>
+				<p id="current-base-case">2 4 6</p> 
+			</div>
+			<div class="guess-input-container">
+				<div class="form">
+					<div class="form-group">
+						<input type="text" id="task-input-1" placeholder="V1"/>
+						<input type="text" id="task-input-2" placeholder="V2"/>
+						<input type="text" id="task-input-3" placeholder="V3"/>
+					</div>
+					<div class="form-group">
+						<button type="button" id="submit-test-case" class="btn btn-primary">Submit Test</button>
+						<button type="button" id="test-user" class="btn btn-warning">Test Me!</button>
+					</div>
+				</div>
+			</div>
+			<div class="guesses-container"><h2 id="guess-label">Past Guesses</h2>
+				<div class="guess-holder" id="correct-guesses"><p>Fits Pattern</p></div>
+				<div class="guess-holder" id="wrong-guesses"><p>Doesn't Fit Pattern</p></div>
+			</div>
+			<div class="game-details-container">
+				<div id="timer-container">Time Playing:</div>
+				<div id="case-completed">Cases Completed:</div>
+				<div class="details-container" id="average-time-per-case-container">Average Time Per Case:</div>
+			</div>
+			<div class="instructions-container">Instructions: loren ipsum play this game!</div>
+		</div>
+	</main>
 
-    </div>
-    <div class="guess-input-container">
-      <div class="form">
-        <div class="form-group">
-          <input type="text" id="task-input-1" class="form-control" placeholder="V1"/>
-          <input type="text" id="task-input-2" class="form-control" placeholder="V2"/>
-          <input type="text" id="task-input-3" class="form-control" placeholder="V3"/>
-        </div>
-         <div class="form-group">
-          <button type="button" id="submit-test-case" class="btn btn-primary">Submit Test</button>
-          <button type="button" id="test-user" class="btn btn-primary">Test Me!</button>
-        </div>
-      </div>
-    </div>
-    <div class="instructions-container">Instructions: loren ipsum play this game!</div>
-    <div class="game-details-container">
-      <div class="details-container" id="timer-container">Time Playing:</div>
-      <div class="details-container" id="case-completed">Cases Completed:</div>
-      <div class="details-container" id="average-time-per-case-container">Average Time Per Case:</div>
-    </div>
-  </div>
-
-  <script src="js/index.js"></script>
+	<script src="js/index.js"></script>
 </body>
 </html>
