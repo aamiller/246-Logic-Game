@@ -164,27 +164,44 @@ $(document).on('click', '.tfButton', function() {
 	let index = $(this).attr('index')
 	if (isTrue == "true") {
 		$("p[numcase=" + index + "]").removeClass("wrong-guess").addClass("correct-guess");
-		state.currentGuessesOnTest[index] == true;
+		state.currentGuessesOnTest[index] = true;
 	} else {
 		$("p[numcase=" + index + "]").removeClass("correct-guess").addClass("wrong-guess");
-		state.currentGuessesOnTest[index] == false;
+		state.currentGuessesOnTest[index] = false;
 	}
 });
 
 $(document).on('click', '#submit-test-answers', function() {
 	let allCorrect = true;
+	 	console.log("gen correct post click" + state.correctTestAnswers);
+ 	console.log("gen guesses" + state.currentGuessesOnTest);
+
 	state.correctTestAnswers.forEach(function(currentValue, index) {
-		if (currentValue != state.currentGuessesOnTest) {
+		if (currentValue != state.currentGuessesOnTest[index]) {
 			allCorrect = false;
-		}
-	})
+	}
+	});
 
 	if (allCorrect) {
 		completedLevel();
+		console.log("Correct");
 	} else {
 		failedLevel();
+		console.log("fail");
+
 	}
 });
+
+function completedLevel() {
+	let level = state.currentLevel;
+	$( '#case-' + (level + 1) ).removeClass("btn-info").addClass("btn-success");
+	state.numLevelsCompleted++;
+	state.levelIsCompleted[level] == true;
+}
+
+function failedLevel() {
+	// Do something to inform the viewer they didn't get it and to try more cases
+}
 
 
 /*
@@ -254,10 +271,11 @@ $(document).on('click', '#submit-test-answers', function() {
  	}
 
  	// DOES NOT have a true and a false case, try again
- 	if (testArray.caseIsCorrect.indexOf(true) == -1 && testArray.caseIsCorrect.indexOf(false) == -1) {
- 		return generateLevelOneTest;
+ 	if (testArray.caseIsCorrect.indexOf(true) == -1 || testArray.caseIsCorrect.indexOf(false) == -1) {
+ 		return generateLevelOneTest();
  	}
 
  	state.correctTestAnswers = testArray.caseIsCorrect;
+ 	console.log("gen correct ans" + state.correctTestAnswers);
  	return testArray;
  }
