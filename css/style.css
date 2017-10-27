@@ -26,6 +26,7 @@ h1 {
 }
 h2 {
 	font-size: 3em;
+	margin-top: 5px;
 }
 
 .game-container {
@@ -80,6 +81,13 @@ h2 {
 .instructions-container {}
 
 
+.guesses-container{
+    display:flex;
+	flex-direction:row;
+	justify-content: center;
+}
+
+
 .guesses-container p {
 	display: inline;
 	}
@@ -91,6 +99,18 @@ h2 {
 }
 .wrong-guess {
 	color: red;
+}
+
+.correct, .false {
+    display:flex;
+	flex-direction:column;
+	padding: 0 3em 0 3em;
+}
+
+.correct p, .false p {
+	display: block;
+	font-weight: 800;
+	font-size: 1.5em;
 }
 
 #guess-label {
@@ -118,5 +138,6 @@ h2 {
 	display: inline;
 
 }
+
 
 
