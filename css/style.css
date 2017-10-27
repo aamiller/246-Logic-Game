@@ -101,6 +101,11 @@ h2 {
 	color: red;
 }
 
+.neutral-guess {
+	color: gray;
+}
+
+
 .correct, .false {
     display:flex;
 	flex-direction:column;
