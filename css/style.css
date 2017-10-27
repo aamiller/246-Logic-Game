@@ -1,3 +1,54 @@
 * {
-	background-color: #3f3f3f;
+	background-color: #999999;
 }
+
+.game-container {
+	
+}
+
+.cases-container {
+
+}
+
+.case {
+	display: inline;
+}
+
+#case-1 {}
+#case-2 {}
+#case-3 {}
+#case-4 {}
+#case-5 {}
+#case-6 {}
+#case-7 {}
+
+.base-case-container {}
+
+#current-base-case {}
+
+.guess-input-container {}
+
+.form-group {}
+
+#task-input-1 {}
+#task-input-2 {}
+#task-input-3 {}
+
+#submit-test-case {}
+
+#test-user {}
+
+.instructions-container {}
+
+
+.game-details-container {}
+
+.details-container {
+	display: inline;	
+}
+
+#timer-container {}
+#case-completed {}
+#average-time-per-case-container {}
+
+

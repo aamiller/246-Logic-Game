@@ -2,4 +2,10 @@
 Created inital files, copying them directly from an old exercise so it will be really easy to link the .js file.
 Thought about using JavaScript canvas, but I've used similar things to make games before and I want to go in a direction with more html. I've settled on making the little known logic game, 2,4,6, and hope that the complexity of my project will come from the number of cases and how stuff is handled in the dom.
 Created css folder and file, gotta organize those somehow!
+Skeletoned HTML file with divs.
+Pushed changes in order to have something represented on github.
+
+10/26/17  8:41 pm
+Returning to this problem since problem d of our weekly exercises has been pretty stop and go for me and I think I'll be able to work on this at a more consistent pace.
+I'm scaffolding out my HTMl page more. I feel like I'm making a ton of classes and IDs, but I just want to make sure that I can access my different elements easily. As I make these IDs, etc, I'm writing them in my .css file to try to keep it organized.
 
