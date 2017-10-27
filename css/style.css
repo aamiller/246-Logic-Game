@@ -86,11 +86,11 @@ h2 {
 .guess-holder {
 	display: inline;
 }
-#correct-guesses {
-
+.correct-guess {
+	color: green;
 }
-#wrong-guesses {
-
+.wrong-guess {
+	color: red;
 }
 
 #guess-label {

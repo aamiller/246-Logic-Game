@@ -8,6 +8,7 @@
 
   <!-- Bootstrap for styling -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -30,7 +31,8 @@
 			</div>
 
 			<div class="base-case-container">
-				<h2 id="base-case-title">Current Base Case</h2>
+				<h2 id="base-case-title">Level 1</h2>
+				<h3>Base Case:</h3>
 				<p id="current-base-case">2 4 6</p> 
 			</div>
 			<div class="guess-input-container">
@@ -46,9 +48,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="guesses-container"><h2 id="guess-label">Past Guesses</h2>
-				<div class="guess-holder" id="correct-guesses"><p>Fits Pattern</p></div>
-				<div class="guess-holder" id="wrong-guesses"><p>Doesn't Fit Pattern</p></div>
+			<h2 id="guess-label">Past Guesses</h2>
+			<div class="guesses-container">
 			</div>
 			<div class="game-details-container">
 				<div id="timer-container">Time Playing:</div>
@@ -59,6 +60,7 @@
 		</div>
 	</main>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 	<script src="js/index.js"></script>
 </body>
 </html>
