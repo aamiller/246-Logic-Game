@@ -29,30 +29,14 @@ h2 {
 	margin-top: 5px;
 }
 
-.game-container {
-	
-}
-
 .cases-container {
 	display: inline;
 
 }
 
-#case-1 {}
-#case-2 {}
-#case-3 {}
-#case-4 {}
-#case-5 {}
-#case-6 {}
-#case-7 {}
-
 .base-case-container {
 	padding-top: 2%;
 	padding-bottom: 2%;
-}
-
-#base-case-title {
-
 }
 
 #current-base-case {
@@ -136,13 +120,13 @@ h2 {
 	display: inline;	
 }
 
-#timer-container {
-
+#guess-categories {
+	font-size: 1.4em;
 }
 
-#average-time-per-case-container {
-
-}
-
-
+ /* an inline border to see where the Canvas is */
+ canvas { 
+ 	border: 1px solid black;
+ 	margin: 0 20% 0 20%;
+ }
 

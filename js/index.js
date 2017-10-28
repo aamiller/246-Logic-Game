@@ -17,6 +17,10 @@ let state = {
 	correctTestAnswers: []
 }
 
+// For making a level
+const canvas = document.getElementById('canvas'); //reference the canvas element
+const brush = canvas.getContext('2d'); //the drawing context
+$( ".level-builder").hide();
 /*
  * Resets the input values and
  * registers the input, adding it
@@ -110,8 +114,15 @@ let state = {
 * on that level as well.
 */
 function levelChanged(newLevel) {
-	if (newLevel != state.currentLevel) {
-		$( "#current-base-case" ).text(state.baseCases[newLevel]);
+	if (state.isPaused) {
+		$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label, #guess-categories').show();
+		 document.getElementById("pause-button").click(); // Unpause timer
+		 $( ".level-builder").hide();
+
+		}
+
+		if (newLevel != state.currentLevel) {
+			$( "#current-base-case" ).text(state.baseCases[newLevel]);
 
 		// Save elements so that they can be replaced when switching between levels
 		state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
@@ -229,7 +240,7 @@ function completedLevel() {
 		levelChanged(state.currentLevel + 1);
 	} else {
 	// Some congrats for finishing all the levels
-	}
+}
 }
 
 // If answers incorrect, asks user if they want to try again.
@@ -504,3 +515,27 @@ function gameWon() {
 
 	$('#winModal').modal('show');
 }
+
+
+/*** Level Building ***/
+$( "#make-a-level" ).click(function () {
+	$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label, #guess-categories').hide();
+	document.getElementById("pause-button").click(); // Pause timer
+	
+	const canvas = document.getElementById('canvas'); //reference the canvas element
+	const brush = canvas.getContext('2d'); //the drawing context
+	$( ".level-builder").show();
+	drawLevelBuilder();
+});
+
+function drawLevelBuilder() {
+	brush.fillStyle = "#000000";
+	brush.strokeStyle = "#000000";
+	brush.moveTo()
+	brush.stroke();
+	brush.closePath();
+	brush.font = "30px Arial";
+	brush.fillText("12", 235, 90);
+}
+
+
