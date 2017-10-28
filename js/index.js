@@ -6,11 +6,12 @@ let state = {
 	numLevelsCompleted: 0,
 	currentLevel: 0,
 	levelsGuessCount: [0,0,0,0,0,0,0],
-	baseCases: ["2 4 6", "2 2 2", "3 3 3", "4 4 4", "5 5 5", "6 6 6", "7 7 7"],
+	baseCases: ["2, 4, 6", "-1, 0, 1", "12, 16, 4", "4 4 4", "5 5 5", "6 6 6", "7 7 7"],
 	guessedTrueCasesPerLevel: [" ", " ", " ", " ", " ", " ", " "],
 	guessedFalseCasesPerLevel: [" ", " ", " ", " ", " "," ", " "],
 	currentGuessesOnTest: [false, false, false, false, false],
-	correctTestAnswers: []
+	correctTestAnswers: [],
+	timeSpentPerLevelInSeconds: [0,0,0,0,0,0,0]
 }
 
 /*
@@ -24,12 +25,12 @@ let state = {
  	$( "#task-input-2" ).val('');
  	$( "#task-input-3" ).val('');
 
- 	// Increment guesses
- 	state.levelsGuessCount[state.currentLevel]++;
+	// Increment guesses
+	state.levelsGuessCount[state.currentLevel]++;
 
- 	let guessIsCorrect = testCase(var1, var2, var3);
- 	renderUserGuess(var1, var2, var3, guessIsCorrect);
- }
+	let guessIsCorrect = testCase(var1, var2, var3);
+	renderUserGuess(var1, var2, var3, guessIsCorrect);
+}
 
 /*
  * Adds user input to list of past guesses.
@@ -109,6 +110,7 @@ let state = {
 		state.guessedTrueCasesPerLevel[state.currentLevel] = document.querySelector('.correct').innerHTML;
 		// Set HTML to the previous set of guesses
 		state.currentLevel = newLevel;
+		$( '#base-case-title' ).text('Level ' + (newLevel + 1));
 		document.getElementById('c').innerHTML = (state.guessedTrueCasesPerLevel[state.currentLevel]);
 		document.getElementById('f').innerHTML = (state.guessedFalseCasesPerLevel[state.currentLevel]);
 	}
@@ -120,37 +122,37 @@ let state = {
  * each is true or false, they have completed the level.
  */
  $( "#test-user" ).click(function() {
-  	// Hides users previous guesses, saving them first
-  	state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
-  	state.guessedTrueCasesPerLevel[state.currentLevel] = document.querySelector('.correct').innerHTML;
-  	document.getElementById('c').innerHTML = ('');
-  	document.getElementById('f').innerHTML = ('');
+	// Hides users previous guesses, saving them first
+	state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
+	state.guessedTrueCasesPerLevel[state.currentLevel] = document.querySelector('.correct').innerHTML;
+	document.getElementById('c').innerHTML = ('');
+	document.getElementById('f').innerHTML = ('');
 
 	// Hides buttons and input boxes to make space for test cases
 	$('.form-group, .guesses-container').hide();
 
- 	// Generates 5 cases that the user can select as correct/incorrect
+	// Generates 5 cases that the user can select as correct/incorrect
 
- 	let levelTestCases = generateLevelTest();
- 	let testHolder = $( ".testing-user-cases-container");
+	let levelTestCases = generateLevelTest();
+	let testHolder = $( ".testing-user-cases-container");
 
- 	levelTestCases.cases.forEach(function(currentValue, index) {
- 		let newCase = $('<p class="guess"></p>');
- 		newCase.text(currentValue);
- 		newCase.attr("numCase", index);
+	levelTestCases.cases.forEach(function(currentValue, index) {
+		let newCase = $('<p class="guess"></p>');
+		newCase.text(currentValue);
+		newCase.attr("numCase", index);
 
- 		let trueButton = $('<button class="btn btn-success tfButton">T</button>');
- 		let falseButton = $('<button class="btn btn-danger tfButton">F</button>');
- 		trueButton.attr({tF:true, index: index});
- 		falseButton.attr({tF:false, index: index});
+		let trueButton = $('<button class="btn btn-success tfButton">T</button>');
+		let falseButton = $('<button class="btn btn-danger tfButton">F</button>');
+		trueButton.attr({tF:true, index: index});
+		falseButton.attr({tF:false, index: index});
 
- 		newCase.append($('<br>'));
- 		newCase.append(trueButton, falseButton);
- 		testHolder.append(newCase);
- 	})
+		newCase.append($('<br>'));
+		newCase.append(trueButton, falseButton);
+		testHolder.append(newCase);
+	})
 
- 	testHolder.append($('<button class="btn btn-primary" id="submit-test-answers">Submit Guesses</button>'));
- 	// Has submit button + modal that says to try again
+	testHolder.append($('<button class="btn btn-primary" id="submit-test-answers">Submit Guesses</button>'));
+	// Has submit button + modal that says to try again
 	//$('.form-group, .guesses-container').show();
 
 });
@@ -173,21 +175,22 @@ $(document).on('click', '.tfButton', function() {
 
 $(document).on('click', '#submit-test-answers', function() {
 	let allCorrect = true;
-	 	console.log("gen correct post click" + state.correctTestAnswers);
- 	console.log("gen guesses" + state.currentGuessesOnTest);
+	console.log("gen correct post click" + state.correctTestAnswers);
+	console.log("gen guesses" + state.currentGuessesOnTest);
 
 	state.correctTestAnswers.forEach(function(currentValue, index) {
 		if (currentValue != state.currentGuessesOnTest[index]) {
 			allCorrect = false;
-	}
+		}
 	});
 
 	if (allCorrect) {
+		if (state.levelIsCompleted[state.currentLevel]) {
+			state.numLevelsCompleted--;
+		}
 		completedLevel();
-		console.log("Correct");
 	} else {
 		failedLevel();
-		console.log("fail");
 
 	}
 });
@@ -196,11 +199,30 @@ function completedLevel() {
 	let level = state.currentLevel;
 	$( '#case-' + (level + 1) ).removeClass("btn-info").addClass("btn-success");
 	state.numLevelsCompleted++;
+	$( '#case-completed' ).text("Cases Completed: " + state.numLevelsCompleted)
 	state.levelIsCompleted[level] == true;
+
+	// Reset interface, clearing tests and re-showing containers
+	$( '.form-group, .guesses-container' ).show();
+	$( '.testing-user-cases-container' ).empty();
+
+	// Switch to next level
+	if (state.currentLevel < 6) {
+		console.log("Change");
+		levelChanged(state.currentLevel + 1);
+	} else {
+	// Some congrats for finishing all the levels
+}
+
 }
 
 function failedLevel() {
-	// Do something to inform the viewer they didn't get it and to try more cases
+	if (confirm("Your guesses were incorrect. Want to change your answers?")) {
+		// Do nothing, let them change their answers
+	} else {
+		$( '.form-group, .guesses-container' ).show();
+		$( '.testing-user-cases-container' ).empty();
+	}
 }
 
 
@@ -213,17 +235,17 @@ function failedLevel() {
  	if (state.currentLevel == 0) {
  		return testLevelOneInputs(var1, var2, var3);
  	} else if (state.currentLevel == 1) {
-
+ 		return testLevelTwoInputs(var1, var2, var3);
  	} else if (state.currentLevel == 2) {
-
+ 		return testLevelThreeInputs(var1, var2, var3);
  	} else if (state.currentLevel == 3) {
-
+ 		return testLevelFourInputs(var1, var2, var3);
  	} else if (state.currentLevel == 4) {
-
+ 		return testLevelFiveInputs(var1, var2, var3);
  	} else if (state.currentLevel == 5) {
-
+ 		return testLevelSixInputs(var1, var2, var3);
  	} else if (state.currentLevel == 6) {
-
+ 		return testLevelSevenInputs(var1, var2, var3);
  	}
  }
 
@@ -235,47 +257,127 @@ function failedLevel() {
  	return var3 > var2 && var2 > var1;
  }
 
+ /*
+ * Level 2:
+ * At least one number must be negative.
+ */
+ function testLevelTwoInputs(var1, var2, var3) {
+ 	return var1 < 0 | var2 < 0 | var3 < 0;
+ }
+
+ /*
+ * Level 3:
+ * Must include a '6'.
+ */
+ function testLevelThreeInputs(var1, var2, var3) {
+ 	return (var1 + '').indexOf('6') > -1 |
+ 			(var2 + '').indexOf('6') > -1 |
+ 			(var3 + '').indexOf('6') > -1;
+ }
+
+ /*
+ * Level 4:
+ * Must include an even number.
+ */
+ function testLevelFourInputs(var1, var2, var3) {
+ 	return var3 > var2 && var2 > var1;
+ }
+
+ /*
+
+ * Level 5:
+ * Numbers must be increasing.
+ */
+ function testLevelFiveInputs(var1, var2, var3) {
+ 	return var3 > var2 && var2 > var1;
+ }
+
+ /*
+ * Level 6:
+ * Numbers must be increasing.
+ */
+ function testLevelSixInputs(var1, var2, var3) {
+ 	return var3 > var2 && var2 > var1;
+ }
+
+ /*
+ * Level 7:
+ * Numbers must be increasing.
+ */
+ function testLevelSevenInputs(var1, var2, var3) {
+ 	return var3 > var2 && var2 > var1;
+ }
+
+/*
+* Based on the current level the user is on,
+* returns an array with details about a set of
+* cases for testing if the user understands
+* the level rule. 
+* Note: not all can use generateTest
+* because random test creation is too memory intensive.
+*/
  function generateLevelTest() {
  	if (state.currentLevel == 0) {
- 		return generateLevelOneTest();
+ 		return generateTest(testLevelOneInputs);
  	} else if (state.currentLevel == 1) {
-
+ 		return {
+ 		 cases: ["0, 1, 2", 
+ 		 		 "-2, 123, -3", 
+ 		 		 "-3, -10, -84",
+ 		 		 "81, 9, 3",
+ 		 		 "12, -18, 4"],
+ 		 caseIsCorrect: [false, true, true, false, true]};
  	} else if (state.currentLevel == 2) {
-
+ 		return {
+ 		 cases: ["18, 90, 16", 
+ 		 		 "-6, 45, -1", 
+ 		 		 "3, 3, 8",
+ 		 		 "-1, 75, 88",
+ 		 		 "19, 0, true"],
+ 		 caseIsCorrect: [true, true, false, false, false]};
  	} else if (state.currentLevel == 3) {
-
+ 		return generateTest(testLevelFourInputs);
  	} else if (state.currentLevel == 4) {
-
+ 		return generateTest(testLevelFiveInputs);
  	} else if (state.currentLevel == 5) {
-
+ 		return generateTest(testLevelSixInputs);
  	} else if (state.currentLevel == 6) {
+ 		return generateTest(testLevelSevenInputs);
 
  	}
  }
 
+/*
+* Takes in a function and creates
+* and returns arrays with test cases that either
+* pass or fail based on the input function's rules.
+* The function input returns true if the input variables
+* satisfy the rule. The cases output will always include one
+* true case and one false case.
+*/
+function generateTest(testLevelInputs) {
+	let testArray = {
+		cases: [],
+		caseIsCorrect: [false, false, false, false, false]
+	};
 
- function generateLevelOneTest() {
- 	let testArray = {
- 		cases: [],
- 		caseIsCorrect: [false, false, false, false, false]
- 	};
-
- 	for (var i = 0; i < 5; i++) {
- 		var needTrueCase = false;
- 		let var1 = Math.floor(Math.random() * 100);
- 		let var2 = Math.floor(Math.random() * 100);
- 		let var3 = Math.floor(Math.random() * 100);
- 		let testPasses = testLevelOneInputs(var1, var2, var3);
+	for (var i = 0; i < 5; i++) {
+		var needTrueCase = false;
+ 		// Introduces a 1/10 chance of having a negative #
+ 		let var1 = Math.floor((Math.random() - .3) * 100);
+ 		let var2 = Math.floor((Math.random() - .3) * 100);
+ 		let var3 = Math.floor((Math.random() - .3) * 100);
+ 		let testPasses = testLevelInputs(var1, var2, var3);
  		testArray.cases.push(var1 + ", " + var2 + ", " + var3);
  		testArray.caseIsCorrect[i] = testPasses;
  	}
 
- 	// DOES NOT have a true and a false case, try again
- 	if (testArray.caseIsCorrect.indexOf(true) == -1 || testArray.caseIsCorrect.indexOf(false) == -1) {
- 		return generateLevelOneTest();
- 	}
+	// DOES NOT have a true and a false case, try again
+	// This does not recurse to avoid causing a stack error
+	if (testArray.caseIsCorrect.indexOf(true) == -1 || testArray.caseIsCorrect.indexOf(false) == -1) {
+		generateTest(testLevelInputs);
+	}
 
- 	state.correctTestAnswers = testArray.caseIsCorrect;
- 	console.log("gen correct ans" + state.correctTestAnswers);
- 	return testArray;
- }
+	state.correctTestAnswers = testArray.caseIsCorrect;
+	return testArray;
+}
