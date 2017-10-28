@@ -18,3 +18,13 @@ Now I'm looking into how to check if the user understands what the logic of each
 I've worked on the project intermittently throughout the day, some in lab, mostly in between classes. I've gotten the test cases to work for when the user is being tested to see if they understand the pattern. Next up, keep track of levels and make the level change when you finish the current level by using .click() or calling the change level function. I really need to organize my code, but TBH I'm going to do that last since I'm going on 300 lines of code and it makes it harder for me to find stuff if I organize it now. I just noticed that my Level # is not changing when I change levels -- time to fix that! I needed some way to tell the user that their guesses were wrong, so I am using a confirm() popup in JS that will also let them change their answers to the logic puzzle. In order to make a timer, I am getting the total time spent on the page.
 
 For complexity, maybe I'll make a hard mode where base cases are always hidden.
+
+Sort of took a break from harder coding to create number cases for the game.
+
+For some reason some of my inputs weren't always being interpreted as integers, so I wrapped some of them with parseInt(). This was the best bug because I only noticed it when I invited a housemate to try my game.
+
+
+10/28/17
+Made the modal work. Somehow it magically worked when I opened the page after not being able to make it work yesterday. So it goes. Made it so the modal will either reset the game of the state or keep current answers/guesses, since my game doesn't have great replay value.
+
+I almost forgot to change the level buttons back to their uncompleted state at the end of the game. Woops.

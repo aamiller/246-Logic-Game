@@ -9,6 +9,8 @@
 	<!-- Bootstrap for styling -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -17,6 +19,27 @@
 		<h1> 2 4 6</h1>
 		<p>A logic game for the ages</p>
 	</header>
+
+<!-- Modal -->
+<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">You Won!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Nice work completing all 7 cases! Since all of the cases are unique, there isn't great replay to this game. But there's great amusement value in watching your friends try to figure out 2 4 6!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="reset">Reset the Game</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 	<main>
 		<div class="game-container">
 			<div class="cases-container">
@@ -51,9 +74,9 @@
 				</div>
 			</div>
 			<div class="game-details-container">
-				<div id="timer-container">Time Playing:</div>
-				<div id="case-completed">Cases Completed: 0</div>
-				<div class="details-container" id="average-time-per-case-container">Average Time Per Case:</div>
+				<button type="button" id="pause-button" class="btn btn-default btn-xs">Unpause</button>
+				<div id="timer-container"><p id="time">Time Playing:</p></div>
+				<div><p id="case-completed">Cases Completed: 0</p></div>
 				<div class="instructions-container">Instructions: loren ipsum play this game!</div>
 			</div>
 			<h2 id="guess-label">Past Guesses</h2>

@@ -18,7 +18,7 @@ header > p {
 
 main {
 	padding-top: 1%;
-	background-color: #888888;
+	background-color: #CCCCCC;
 }
 
 h1 {
@@ -87,6 +87,10 @@ h2 {
 	justify-content: center;
 }
 
+.guess {
+	font-size: 1.5em;
+	font-weight: 600;
+}
 
 .guesses-container p {
 	display: inline;
@@ -95,7 +99,7 @@ h2 {
 	display: inline;
 }
 .correct-guess {
-	color: green;
+	color: #006400;
 }
 .wrong-guess {
 	color: red;
@@ -123,7 +127,8 @@ h2 {
 }
 
 
-.game-details-container {
+.game-details-container p {
+	font-size: 1.3em;
 
 }
 
@@ -132,15 +137,10 @@ h2 {
 }
 
 #timer-container {
-	display: inline;
 
 }
-#case-completed {
-	display: inline;
 
-}
 #average-time-per-case-container {
-	display: inline;
 
 }
 
