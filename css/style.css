@@ -8,6 +8,10 @@ body {
 
 }
 
+img {
+	height: 70px;
+}
+
 header {
 	background-color: #666666;
 }
@@ -123,10 +127,3 @@ h2 {
 #guess-categories {
 	font-size: 1.4em;
 }
-
- /* an inline border to see where the Canvas is */
- canvas { 
- 	border: 1px solid black;
- 	margin: 0 20% 0 20%;
- }
-

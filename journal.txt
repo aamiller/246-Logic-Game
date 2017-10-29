@@ -28,3 +28,8 @@ For some reason some of my inputs weren't always being interpreted as integers, 
 Made the modal work. Somehow it magically worked when I opened the page after not being able to make it work yesterday. So it goes. Made it so the modal will either reset the game of the state or keep current answers/guesses, since my game doesn't have great replay value.
 
 I almost forgot to change the level buttons back to their uncompleted state at the end of the game. Woops.
+
+To do: add instructions for when the user is testing their knowledge.
+Display what the rule was after a user completes a level.
+Add favicon!
+Roll/shake to get another base case of same page type.

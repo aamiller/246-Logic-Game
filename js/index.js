@@ -10,17 +10,13 @@ let state = {
 	numLevelsCompleted: 0,
 	currentLevel: 0,
 	levelsGuessCount: [0,0,0,0,0,0,0],
-	baseCases: ["2, 4, 6", "-1, 0, 1", "12, 16, 4", "2, 4, 8", "8, 1, 3", "4, 4, 4", "4, 2, 2"],
+	baseCases: [[2, 4, 6], [-1, 0, 1], [12, 16, 4], [2, 4, 8], [8, 1, 3], [4, 4, 4], [4, 2, 2]],
 	guessedTrueCasesPerLevel: [" ", " ", " ", " ", " ", " ", " "],
 	guessedFalseCasesPerLevel: [" ", " ", " ", " ", " "," ", " "],
 	currentGuessesOnTest: [false, false, false, false, false],
 	correctTestAnswers: []
 }
 
-// For making a level
-const canvas = document.getElementById('canvas'); //reference the canvas element
-const brush = canvas.getContext('2d'); //the drawing context
-$( ".level-builder").hide();
 /*
  * Resets the input values and
  * registers the input, adding it
@@ -40,15 +36,66 @@ $( ".level-builder").hide();
 }
 
 /*
+* Takes in three numbers and returns
+* them in domino image format.
+*/
+function convertToDomino(var1, var2, var3) {
+	console.log(var1);
+	console.log(var2);
+	console.log(var3);
+	console.log("endbatch");
+
+	let var1Img = convertIndividualDigitsOfNum(var1);
+	let var2Img = convertIndividualDigitsOfNum(var2);
+	let var3Img = convertIndividualDigitsOfNum(var3);
+	return var1Img.append(var2Img, var3Img);
+}
+
+/*
+* Breaks down digits of number
+* and returns domino conversion of entire
+* number.
+*/
+function convertIndividualDigitsOfNum(number) {
+	let output = $( '<div class="num-group"></div>');
+	let numberStr = number + "";
+	for (let i = 0; i < numberStr.length; i++) {
+		if (numberStr.indexOf(" ") == -1) { // No space
+			if (numberStr.indexOf('-') != -1) {
+			output.append(convertNumToDomino("-" + numberStr.charAt(i)));
+		} else {
+			output.append(convertNumToDomino(numberStr.charAt(i)));
+
+		}
+		}
+	}
+	return output;
+}
+
+/*
+* Takes in an array of 3 numbers, returns html
+* for their domino display.
+*/
+function convertCaseArrayToDomino(inputArray) {
+	return convertToDomino(inputArray[0], inputArray[1], inputArray[2]);
+}
+
+/*
+* Takes in a single digit and returns
+* an image element that will display that domino.
+*/
+function convertNumToDomino(number) {
+	return $( '<img></img>').attr('src', "images/dominoes/black/" + number + "_domino.png")
+}
+
+/*
  * Adds user input to list of past guesses.
  *
  */
-
  function renderUserGuess(var1, var2, var3, wasCorrect) {
  	let guessStringHtml = var1 + ", " + var2 + ", " + var3;
  	let newGuess = $('<p class="guess"></p>');
  	newGuess.text(guessStringHtml);
-
 
 	// Set class so that it will be displayed as true or false
 	if (wasCorrect) {
@@ -58,7 +105,6 @@ $( ".level-builder").hide();
 		newGuess.addClass('wrong-guess'); 
 		$( ".false" ).append(newGuess);
 	}
-
 }
 
 
@@ -122,7 +168,7 @@ function levelChanged(newLevel) {
 		}
 
 		if (newLevel != state.currentLevel) {
-			$( "#current-base-case" ).text(state.baseCases[newLevel]);
+			$( "#current-base-case" ).html(convertCaseArrayToDomino(state.baseCases[newLevel]));
 
 		// Save elements so that they can be replaced when switching between levels
 		state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
@@ -159,8 +205,9 @@ function levelChanged(newLevel) {
 
 	// Add each test case and a T/F button
 	levelTestCases.cases.forEach(function(currentValue, index) {
-		let newCase = $('<p class="guess"></p>');
-		newCase.text(currentValue);
+		let newCase = $('<div class="dominoes-holder"></div>');
+
+		newCase.html(convertCaseArrayToDomino(currentValue));
 		newCase.attr("numCase", index);
 
 		let trueButton = $('<button class="btn btn-success tfButton">T</button>');
@@ -365,45 +412,45 @@ function generateLevelTest() {
 		return generateTest(testLevelOneInputs);
 	} else if (state.currentLevel == 1) {
 		return {
-			cases: ["0, 1, 2", 
-			"-2, 123, -3", 
-			"-3, -10, -84",
-			"81, 9, 3",
-			"12, -18, 4"],
+			cases: [[0, 1, 2], 
+			[-2, 123, -3], 
+			[-3, -10, -84],
+			[81, 9, 3],
+			[12, -18, 4]],
 			caseIsCorrect: [false, true, true, false, true]};
 		} else if (state.currentLevel == 2) {
 			return {
-				cases: ["18, 90, 16", 
-				"-6, 45, -1", 
-				"3, 3, 8",
-				"-1, 75, 88",
-				"19, 0, 1"],
+				cases: [[18, 90, 16], 
+				[-6, 45, -1], 
+				[3, 3, 8],
+				[-1, 75, 88],
+				[19, 0, 1]],
 				caseIsCorrect: [true, true, false, false, false]};
 			} else if (state.currentLevel == 3) {
 				return generateTest(testLevelFourInputs);
 			} else if (state.currentLevel == 4) {
 				return {
-					cases: ["18, 90, 16", 
-					"-6, 45, -1", 
-					"3, 3, 1",
-					"-1, 75, 88",
-					"19, 0, 11"],
+					cases: [[18, 90, 16], 
+					[-6, 45, -1], 
+					[3, 3, 1],
+					[-1, 75, 88],
+					[19, 0, 11]],
 					caseIsCorrect: [true, true, false, true, true]};
 				} else if (state.currentLevel == 5) {
 					return {
-						cases: ["18, 90, 16", 
-						"-6, 45, -1", 
-						"64, 2, 36",
-						"36, 4, 144",
-						"19, 0, 11"],
+						cases: [[18, 90, 16], 
+						[-6, 45, -1], 
+						[64, 2, 36],
+						[36, 4, 144],
+						[19, 0, 11]],
 						caseIsCorrect: [false, false, false, true, false]};
 					} else if (state.currentLevel == 6) {
 						return {
-							cases: ["4, 2, 2", 
-							"39, 13, 26", 
-							"-9, -3, -6",
-							"13, 4, 92",
-							"19, 0, 11"],
+							cases: [[4, 2, 2], 
+							[39, 13, 26], 
+							[-9, -3, -6],
+							[13, 4, 92],
+							[19, 0, 11]],
 							caseIsCorrect: [true, true, true, false, false]};
 						}
 					}
@@ -429,7 +476,7 @@ function generateTest(testLevelInputs) {
 		let var2 = Math.floor((Math.random() - .3) * 100);
 		let var3 = Math.floor((Math.random() - .3) * 100);
 		let testPasses = testLevelInputs(var1, var2, var3);
-		testArray.cases.push(var1 + ", " + var2 + ", " + var3);
+		testArray.cases.push([var1,var2,var3]);
 		testArray.caseIsCorrect[i] = testPasses;
 	}
 
@@ -515,27 +562,3 @@ function gameWon() {
 
 	$('#winModal').modal('show');
 }
-
-
-/*** Level Building ***/
-$( "#make-a-level" ).click(function () {
-	$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label, #guess-categories').hide();
-	document.getElementById("pause-button").click(); // Pause timer
-	
-	const canvas = document.getElementById('canvas'); //reference the canvas element
-	const brush = canvas.getContext('2d'); //the drawing context
-	$( ".level-builder").show();
-	drawLevelBuilder();
-});
-
-function drawLevelBuilder() {
-	brush.fillStyle = "#000000";
-	brush.strokeStyle = "#000000";
-	brush.moveTo()
-	brush.stroke();
-	brush.closePath();
-	brush.font = "30px Arial";
-	brush.fillText("12", 235, 90);
-}
-
-
