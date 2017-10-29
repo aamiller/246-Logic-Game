@@ -9,7 +9,7 @@
 	<!-- Bootstrap for styling -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<link rel="stylesheet" href="css/style.css">
 
@@ -20,25 +20,25 @@
 		<p>A logic game for the ages</p>
 	</header>
 
-<!-- Modal -->
-<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">You Won!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Nice work completing all 7 cases! Since all of the cases are unique, there isn't great replay to this game. But there's great amusement value in watching your friends try to figure out 2 4 6!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="reset">Reset the Game</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<!-- Modal -->
+	<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">You Won!</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Nice work completing all 7 cases! Since all of the cases are unique, there isn't great replay to this game. But there's great amusement value in watching your friends try to figure out 2 4 6!
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"  id="reset">Reset the Game</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<main>
 		<div class="game-container">
@@ -51,46 +51,104 @@
 				<button type="button" id="case-5" class="btn btn-info">Level 5</button>
 				<button type="button" id="case-6" class="btn btn-info">Level 6</button>
 				<button type="button" id="case-7" class="btn btn-info">Level 7</button>
+				<button type="button" id="input-level" class="btn btn-primary">Make A Level</button>
 			</div>
+			<!-- Trigger the modal with a button -->
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#instructionsModal">Open Instructions</button>
 
-			<div class="base-case-container">
-				<h2 id="base-case-title">Level 1</h2>
-				<h3>Base Case:</h3>
-				<p id="current-base-case">2, 4, 6</p>
-			</div>
-			<div class="testing-user-cases-container"></div>
+			<div id="make-a-level">
+				<h2>Make a level for your friends to play!</h2>
+				<p>This requires some knowledge of <a href="https://www.w3schools.com/jsref/jsref_if.asp">JavaScript conditional operators</a> and <a href="https://www.w3schools.com/jsref/jsref_return.asp"> functions with return statements.</a>
+					<p class="label">Edit the function so that it will return true if your test case is satisfied.</p>
+					<textarea id="user-function" rows="8" cols="80">function myRule(var1, var2, var3) {
 
-			<div class="guess-input-container" >
-				<div class="form">
-					<div class="form-group">
-						<input type="text" id="task-input-1" placeholder="V1"/>
-						<input type="text" id="task-input-2" placeholder="V2"/>
-						<input type="text" id="task-input-3" placeholder="V3"/>
+	return // Needs to return something true or false, ex. var1 > var2
+}</textarea>
+					<p class="label">Edit the array to include a base case and 5 cases, and whether not those 5 cases work with your rule.</p>
+					<textarea id="input-state" rows="8" cols="80">
+let cases = {
+baseCase: [num,num,num],
+testCases: [[num1ofCase1, num2ofCase1, num3ofCase1],[num1ofCase2, num2ofCase2, num3ofCase2],[num1ofCase3, num2ofCase3, num3ofCase3],[num1ofCase4, num2ofCase4, num3ofCase4],[num1ofCase4, num2ofCase4, num3ofCase4]],
+testCaseWorks: [true/false, true/false, true/false, true/false, true/false]
+}
+					</textarea>
+<br>
+<button type="button" id="render-user-input-case" class="btn btn-default btn-sm">Render my case</button>
+				</div>
+				<div class="base-case-container">
+					<h2 id="base-case-title">Level 1</h2>
+					<h3>Base Case:</h3>
+					<img src="images/shake-domino.png" id="shake-domino" alt="Shake domino, click to shuffle base case"></img>
+					<div id="current-base-case"></p>
 					</div>
-					<div class="form-group">
-						<button type="button" id="submit-test-case" class="btn btn-primary">Submit Test</button>
-						<button type="button" id="test-user" class="btn btn-warning">Test Me!</button>
-					</div>
-				</div>
-			</div>
-			<div class="game-details-container">
-				<button type="button" id="pause-button" class="btn btn-default btn-xs">Unpause</button>
-				<div id="timer-container"><p id="time">Time Playing:</p></div>
-				<div><p id="case-completed">Cases Completed: 0</p></div>
-				<div class="instructions-container">Instructions: This is a logic game where there is a hidden rule that fits some triplets of numbers and not others. You guess numbers by inputting a number and testing if it fits the rule. The base case that is given fits the rule. When you've performed all the further experimental tests you want, you can test what you think the rule is against 5 cases. If you correctly identify each case as fitting with the rule (or not), you pass the level.</div>
-			</div>
-			<h2 id="guess-label">Past Guesses</h2>
-			<p id="guess-categories"> Correct Guesses - Incorrect Guesses</p>
-			<div class="guesses-container">
-				<div class="correct" id="c">
-				</div>
-				<div class="false" id="f">
-				</div>
-			</div>
-		</div>
-	</main>
+					<div class="testing-user-cases-container"></div>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
-	<script src="js/index.js"></script>
-</body>
-</html>
+					<div class="guess-input-container" >
+						<div class="form">
+							<div class="form-group">
+								<p> Make a Guess </p>
+								<button type="button" id="task-input-1" class="btn btn-default btn-sm choose-index-button active">First</button>
+								<button type="button" id="task-input-2" class="btn btn-default btn-sm choose-index-button">Second</button>
+								<button type="button" id="task-input-3" class="btn btn-default btn-sm choose-index-button">Third</button>
+							</div>
+							<div class="guessed-domino-holder" id="guessed-domino-holder-1"></div>
+							<div class="guessed-domino-holder" id="guessed-domino-holder-2"></div>
+							<div class="guessed-domino-holder" id="guessed-domino-holder-3"></div>
+
+							<div id="domino-choices"></div>
+							<div class="form-group">
+								<button type="button" id="reset-input-vals" class="btn btn-danger btn-xs">Reset Choices</button>					
+								<br>
+								<button type="button" id="submit-test-case" class="btn btn-primary">Submit Test</button>
+								<button type="button" id="test-user" class="btn btn-warning">Test Me!</button>
+							</div>
+						</div>
+					</div>
+					<div class="game-details-container">
+						<button type="button" id="pause-button" class="btn btn-default btn-xs">Unpause</button>
+						<div id="timer-container"><p id="time">Time Playing:</p></div>
+						<div><p id="case-completed">Cases Completed: 0</p></div>
+
+
+						<div id="instructionsModal" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Instructions</h4>
+									</div>
+									<div class="modal-body">
+										<p>
+											This is a <em>logic game</em> where there is a hidden rule that fits some triplets of numbers and not others.</p>
+											<p>Each case comes with a <em>base case</em> that fits the hidden rule.</p>
+											<p>Each domino represents a number. The black dominoes represent negative numbers.</p>
+											<p>You can make experimental tests to see if they fit the rule by clicking the "First", "Second", and "Third" buttons to choose which triplet in your guess you want to add dominoes to and then clicking dominoes in the domino bank. You can switch between the triplet you are adding numbers to by clicking another button of the 3. If you choose any black/negative dominoes for a triplet, that place of the triplet will be interpreted as negative.</p>
+											<p>You can use keys 1,2 and 3 to quick select "First", "Second" and "Third."</p>
+											<p>Your guesses will appear below "Past Guesses" and will stay if you switch to another level so that you can come back to a level and still see what you've guessed in the past.</p>
+											<p>When you've performed all the further experimental tests you want, you can test what you think the rule is against 5 cases. If you correctly identify each case as fitting with the rule (or not), you pass the level.</p>
+											<p>If you're stuck, you can click the shake domino icon to shuffle the base case that is being displayed to another one that fits the rule.</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<h2 id="guess-label">Past Guesses</h2>
+						<p id="guess-categories"> Correct Guesses - Incorrect Guesses</p>
+						<div class="guesses-container">
+							<div class="correct" id="c">
+							</div>
+							<div class="false" id="f">
+							</div>
+						</div>
+					</div>
+				</main>
+
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+				<script src="js/index.js"></script>
+			</body>
+			</html>

@@ -9,14 +9,43 @@ let state = {
 	timeBegan: 0,
 	numLevelsCompleted: 0,
 	currentLevel: 0,
-	levelsGuessCount: [0,0,0,0,0,0,0],
 	baseCases: [[2, 4, 6], [-1, 0, 1], [12, 16, 4], [2, 4, 8], [8, 1, 3], [4, 4, 4], [4, 2, 2]],
-	guessedTrueCasesPerLevel: [" ", " ", " ", " ", " ", " ", " "],
-	guessedFalseCasesPerLevel: [" ", " ", " ", " ", " "," ", " "],
+	guessedTrueCasesPerLevel: [" ", " ", " ", " ", " ", " ", " ", ""],
+	guessedFalseCasesPerLevel: [" ", " ", " ", " ", " "," ", " ", ""],
 	currentGuessesOnTest: [false, false, false, false, false],
-	correctTestAnswers: []
+	correctTestAnswers: [],
+	currentClickedInputButton: 1,
+	inTest: false,
+	shuffleCases: [
+	[[4, 6, 8],[102, 104, 108],[-10, -8, -2]],
+	[[-2, 0, 1],[14, 0, -20],[-1, 0, -5]],
+	[[96, 19, 59],[12, 56, 19],[0, 17, 64]],
+	[[10, 10, 10],[27, 59, 12],[0, 21, 6]],
+	[[12, 53, 10],[8, 43, 155],[6, 53, 12]],
+	[[16, 81, 25],[81, 26, 16],[9, 100, 16]],
+	[[1, 0, 1],[60, -10, 70],[-23, -10, -13]]
+	]
 }
 
+
+function setUp() {
+	$ ( "#make-a-level" ).show();
+	$( '#domino-choices' ).append(convertNumToDomino("-0"))
+	for (let k = -1; k < 2; k=k+2) {
+		for (let i = 0; i < 10; i++) {
+			if (i == 0 && k == -1) { i++; }
+			$( '#domino-choices' ).append(convertNumToDomino(k*i));
+		}
+	}
+// Setup so dominoes render
+levelChanged(1);
+levelChanged(0);
+}
+
+setUp();
+
+
+/*** Domino conversion and processing functions ****/
 /*
  * Resets the input values and
  * registers the input, adding it
@@ -24,27 +53,17 @@ let state = {
  * level.
  */
  function processInputs(var1, var2, var3) {
- 	$( "#task-input-1" ).val('');
- 	$( "#task-input-2" ).val('');
- 	$( "#task-input-3" ).val('');
+ 	$( "#reset-input-vals" ).click();
 
-	// Increment guesses
-	state.levelsGuessCount[state.currentLevel]++;
-
-	let guessIsCorrect = testCase(parseInt(var1), parseInt(var2), parseInt(var3));
-	renderUserGuess(var1, var2, var3, guessIsCorrect);
-}
+ 	let guessIsCorrect = testCase(parseInt(var1), parseInt(var2), parseInt(var3));
+ 	renderUserGuess(var1, var2, var3, guessIsCorrect);
+ }
 
 /*
 * Takes in three numbers and returns
 * them in domino image format.
 */
 function convertToDomino(var1, var2, var3) {
-	console.log(var1);
-	console.log(var2);
-	console.log(var3);
-	console.log("endbatch");
-
 	let var1Img = convertIndividualDigitsOfNum(var1);
 	let var2Img = convertIndividualDigitsOfNum(var2);
 	let var3Img = convertIndividualDigitsOfNum(var3);
@@ -61,12 +80,13 @@ function convertIndividualDigitsOfNum(number) {
 	let numberStr = number + "";
 	for (let i = 0; i < numberStr.length; i++) {
 		if (numberStr.indexOf(" ") == -1) { // No space
-			if (numberStr.indexOf('-') != -1) {
-			output.append(convertNumToDomino("-" + numberStr.charAt(i)));
-		} else {
-			output.append(convertNumToDomino(numberStr.charAt(i)));
+			if (numberStr.indexOf('-') != -1 && numberStr.charAt(i) != "0") {
+				if (i == 0) { i++; } // Skip negative
+				output.append(convertNumToDomino("-" + numberStr.charAt(i)));
+			} else {
+				output.append(convertNumToDomino(numberStr.charAt(i)));
 
-		}
+			}
 		}
 	}
 	return output;
@@ -85,37 +105,57 @@ function convertCaseArrayToDomino(inputArray) {
 * an image element that will display that domino.
 */
 function convertNumToDomino(number) {
-	return $( '<img></img>').attr('src', "images/dominoes/black/" + number + "_domino.png")
+	return $( '<img></img>').attr({src: "images/dominoes/" + number + "_domino.png", id: number, class: "domino-img"})
 }
 
-/*
- * Adds user input to list of past guesses.
- *
- */
- function renderUserGuess(var1, var2, var3, wasCorrect) {
- 	let guessStringHtml = var1 + ", " + var2 + ", " + var3;
- 	let newGuess = $('<p class="guess"></p>');
- 	newGuess.text(guessStringHtml);
+/*** End domino conversion and processing functions ****/
 
-	// Set class so that it will be displayed as true or false
-	if (wasCorrect) {
-		newGuess.addClass('correct-guess');
-		$( ".correct" ).append(newGuess);
-	} else { 
-		newGuess.addClass('wrong-guess'); 
-		$( ".false" ).append(newGuess);
-	}
+
+
+
+/*** User entering own test cases management ***/
+$( ".choose-index-button" ).click(function ( event ) {
+ 	// Stops other button from looking pressed
+ 	$( ".choose-index-button" ).removeClass("active");
+
+ 	// Makes currently clicked button look pressed
+ 	$( event.target ).addClass("active");
+
+ 	state.currentClickedInputButton = event.target.id.charAt(11);
+ });
+
+$( ".domino-img" ).click(function ( event )  {
+	if (event.target.id != "-0") {
+		let dominoToAdd = convertNumToDomino(event.target.id);
+
+		$( "#guessed-domino-holder-" + state.currentClickedInputButton).append(dominoToAdd);  
+
+} else { // Is color changing block
+
 }
+});
 
 
+// Empties out current domino holding containers
+$( "#reset-input-vals" ).click(function () {
+	$( ".guessed-domino-holder" ).empty();
+});
+
+/*** End user entering own test cases management ***/
+
+
+
+
+
+/*** Submit test case management ***/
 /* 
  * Gets values from the inputs on
  * the user interface.
  */
  $( "#submit-test-case" ).click(function() {
- 	let firstVal = document.getElementById('task-input-1').value;
- 	let secondVal = document.getElementById('task-input-2').value;
- 	let thirdVal = document.getElementById('task-input-3').value;
+ 	let firstVal = collapseChildrenToNumber($( '#guessed-domino-holder-1' ));
+ 	let secondVal = collapseChildrenToNumber($( '#guessed-domino-holder-2' ));
+ 	let thirdVal = collapseChildrenToNumber($( '#guessed-domino-holder-3' ));
 
 	// If values aren't numbers or any value is empty
 	if ((isNaN(firstVal) | isNaN(secondVal) | isNaN(thirdVal)) |
@@ -125,6 +165,45 @@ function convertNumToDomino(number) {
 	processInputs(firstVal, secondVal, thirdVal);
 }
 });
+
+/*
+* Takes in the children of 
+* an element (should be containers for guessed dominoes).
+* Returns a number that represents them.
+*/
+function collapseChildrenToNumber(parentElement) {
+	let output = "";
+	let isNegative = false;
+	parentElement.children().each(function () {
+		if (this.id.indexOf("-") == -1) {
+			output = output + this.id;
+		} else {
+			output = output + this.id.substring(1);
+			isNegative = true;
+		}
+	});
+	if (isNegative) { output = "-" + output; }
+	return output;
+}
+
+/*
+ * Adds user input to list of past guesses.
+ * Takes in integers and where or not guess
+ * was correct.
+ */
+ function renderUserGuess(var1, var2, var3, wasCorrect) {
+ 	let guessElement = $( '<div class="rendered-guess"></div>').append(convertToDomino(var1, var2, var3));
+	// Set class so that it will be displayed as true or false
+	if (wasCorrect) {
+		guessElement.addClass('correct-guess');
+		$( ".correct" ).append(guessElement);
+	} else { 
+		guessElement.addClass('wrong-guess'); 
+		$( ".false" ).append(guessElement);
+	}
+}
+/*** End submit test case management ***/
+
 
 
 /* 
@@ -161,15 +240,16 @@ function convertNumToDomino(number) {
 */
 function levelChanged(newLevel) {
 	if (state.isPaused) {
-		$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label, #guess-categories').show();
+		$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label').show();
 		 document.getElementById("pause-button").click(); // Unpause timer
 		 $( ".level-builder").hide();
 
 		}
 
-		if (newLevel != state.currentLevel) {
+		if (newLevel != state.currentLevel && !state.inTest) {
 			$( "#current-base-case" ).html(convertCaseArrayToDomino(state.baseCases[newLevel]));
-
+			$( ".base-case-container" ).show();
+			$ ( "#make-a-level" ).hide();
 		// Save elements so that they can be replaced when switching between levels
 		state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
 		state.guessedTrueCasesPerLevel[state.currentLevel] = document.querySelector('.correct').innerHTML;
@@ -187,6 +267,7 @@ function levelChanged(newLevel) {
  * each is true or false, they have completed the level.
  */
  $( "#test-user" ).click(function() {
+ 	state.inTest = true;
 	// Hides users previous guesses, saving them first
 	state.guessedFalseCasesPerLevel[state.currentLevel] = document.querySelector('.false').innerHTML;
 	state.guessedTrueCasesPerLevel[state.currentLevel] = document.querySelector('.correct').innerHTML;
@@ -194,12 +275,19 @@ function levelChanged(newLevel) {
 	document.getElementById('f').innerHTML = ('');
 
 	// Hides buttons and input boxes to make space for test cases
-	$('.form-group, .guesses-container').hide();
+	$('.form-group, .guesses-container,  #guess-categories, #guess-placeholder-text, #guess-label, .guessed-domino-holder').hide();
 
 	// Generates 5 cases that the user can select as correct/incorrect
 
 	let levelTestCases = generateLevelTest();
-	state.correctTestAnswers = levelTestCases.caseIsCorrect;
+
+	// If custom level
+	if (levelTestCases.cases[0] == 7) {
+		state.correctTestAnswers = cases.testCaseWorks;
+		levelTestCases.cases = cases.testCases;
+	} else { // If not custom level
+		state.correctTestAnswers = levelTestCases.caseIsCorrect;
+	}
 
 	let testHolder = $( ".testing-user-cases-container");
 
@@ -237,10 +325,10 @@ $(document).on('click', '.tfButton', function() {
 	// Change the color of the output test on screen
 	// so the user can see what their guesses are.
 	if (isTrue == "true") {
-		$("p[numcase=" + index + "]").removeClass("wrong-guess").addClass("correct-guess");
+		$("div[numcase=" + index + "]").removeClass("wrong-guess").addClass("correct-guess");
 		state.currentGuessesOnTest[index] = true;
 	} else {
-		$("p[numcase=" + index + "]").removeClass("correct-guess").addClass("wrong-guess");
+		$("div[numcase=" + index + "]").removeClass("correct-guess").addClass("wrong-guess");
 		state.currentGuessesOnTest[index] = false;
 	}
 });
@@ -260,6 +348,7 @@ $(document).on('click', '#submit-test-answers', function() {
 			state.numLevelsCompleted--;
 		}
 		completedLevel();
+		state.inTest = false;
 	} else {
 		failedLevel();
 
@@ -271,6 +360,9 @@ $(document).on('click', '#submit-test-answers', function() {
 * Marks level user is on as completed.
 */ 
 function completedLevel() {
+	if (state.currentLevel == 7) {
+		$( "#input-level" ).addClass('success').removeClass("primary");
+	}
 	let level = state.currentLevel;
 	$( '#case-' + (level + 1) ).removeClass("btn-info").addClass("btn-success");
 	state.numLevelsCompleted++;
@@ -279,15 +371,13 @@ function completedLevel() {
 	if (state.numLevelsCompleted == 7) { gameWon(); }
 
 	// Reset interface, clearing tests and re-showing containers
-	$( '.form-group, .guesses-container' ).show();
+	$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder' ).show();
 	$( '.testing-user-cases-container' ).empty();
 
 	// Switch to next level
 	if (state.currentLevel < 6) {
 		levelChanged(state.currentLevel + 1);
-	} else {
-	// Some congrats for finishing all the levels
-}
+	}
 }
 
 // If answers incorrect, asks user if they want to try again.
@@ -296,11 +386,15 @@ function failedLevel() {
 	if (confirm("Your guesses were incorrect. Want to change your answers?")) {
 		// Do nothing, let them change their answers
 	} else {
-		$( '.form-group, .guesses-container' ).show();
+		$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder' ).show();
 		$( '.testing-user-cases-container' ).empty();
+		state.inTest = false;
+
 	}
 }
 
+
+/*** Test generation and test case evaluation ***/
 
 /*
  * Takes in the three input values
@@ -322,6 +416,8 @@ function failedLevel() {
  		return testLevelSixInputs(var1, var2, var3);
  	} else if (state.currentLevel == 6) {
  		return testLevelSevenInputs(var1, var2, var3);
+ 	} else if (state.currentLevel == 7) {
+ 		return myRule(var1, var2, var3);
  	}
  }
 
@@ -452,6 +548,8 @@ function generateLevelTest() {
 							[13, 4, 92],
 							[19, 0, 11]],
 							caseIsCorrect: [true, true, true, false, false]};
+						} else if (state.currentLevel == 7) {
+							return {cases: [7], caseIsCorrect: [false]}; 
 						}
 					}
 
@@ -488,6 +586,9 @@ function generateTest(testLevelInputs) {
 
 	return testArray;
 }
+
+/*** End Test generation and test case evaluation ***/
+
 
 
 
@@ -541,6 +642,7 @@ function updateTimer() {
 function gameWon() {
 	state.levelIsCompleted = [false, false, false, false, false, false];
 	state.timeElapsed = 0;
+	currentClickedInputButton = 1;
 	state.totalTimePaused = 0;
 	state.timePaused = 0;
 	state.isPaused = false;
@@ -562,3 +664,57 @@ function gameWon() {
 
 	$('#winModal').modal('show');
 }
+
+
+$( "#shake-domino" ).on("click", function () {
+	// Chooses 1 of three possible shuffle-able base cases and displays it.
+	$( "#current-base-case" ).html(convertCaseArrayToDomino(state.shuffleCases[state.currentLevel][Math.floor(Math.random() * 3)]));
+});
+
+
+
+/** User making own case handling **/
+
+$( "#input-level" ).on("click", function () {
+	$( ".base-case-container" ).hide();
+	$ ( "#make-a-level" ).show();
+});
+
+
+// Only do-able once
+$( "#render-user-input-case" ).one("click", function () {
+	let inputFunction = $( "textarea#user-function" ).val();
+	let inputState = $( "textarea#input-state" ).val();
+
+	var script = "<script type=\"text/javascript\">" + inputFunction + inputState + "</script>";
+ 	// using jquery next
+    $('body').append(script); //incorporates and executes
+
+    // Redisplay main game components
+    $( ".base-case-container" ).show();
+    $ ( "#make-a-level" ).hide();
+
+    state.currentLevel = 7;
+
+    $( "#current-base-case" ).html(convertCaseArrayToDomino(cases.baseCase));
+		// Save elements so that they can be replaced when switching between levels
+		$( '#base-case-title' ).text('Your Level');
+
+	});
+
+
+/** end user making own case handling **/
+
+// Button quick select for user inputting
+// test cases. Code adapted from stack overflow
+$(document).keypress(function(e) {
+	console.log(e.which);
+ if (e.which === 49) { //1 key
+    	console.log("1");
+        $ ( '#task-input-1' ).click();
+    } else if (e.which === 50) { //2 key
+        $ ( '#task-input-2' ).click();
+    } else if (e.which === 51) { //3 key
+        $ ( '#task-input-3' ).click();
+    }
+  });

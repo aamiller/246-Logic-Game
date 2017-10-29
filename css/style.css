@@ -9,11 +9,12 @@ body {
 }
 
 img {
-	height: 70px;
+	height: 150px;
+
 }
 
 header {
-	background-color: #666666;
+	background-color: #AAAAAA;
 }
 
 header > p {
@@ -28,13 +29,24 @@ main {
 h1 {
 	font-size: 5em;
 }
+
 h2 {
-	font-size: 3em;
-	margin-top: 5px;
+	font-size: 2.5em;
+	margin-top: 2px;
+	padding-top: 0;
+}
+
+#shake-domino {
+	height: 50px;
+}
+
+#reset-input-vals {
+	margin: 1em 0 2em 0;
 }
 
 .cases-container {
 	display: inline;
+	margin-bottom: 1em;
 
 }
 
@@ -43,13 +55,21 @@ h2 {
 	padding-bottom: 2%;
 }
 
-#current-base-case {
-	font-size: 3em;
-	font-weight: 800;
+.num-group {
+	display: inline;
+	padding: 0 0em 0 1em;
 }
 
 .guess-input-container {
 	padding-bottom: 2%;
+}
+
+#current-base-case {
+	padding: .5em;
+}
+
+#current-base-case img {
+	padding: .1em;
 }
 
 .form-group input {
@@ -66,13 +86,33 @@ h2 {
 
 #test-user {}
 
-.instructions-container {}
 
+#domino-choices {
+	margin: 3% 20% 0 20%;
+}
+#domino-choices img {
+	height: 90px;
+	padding: .3em;
+}
 
-.guesses-container{
+.dominoes-holder img {
+	height: 90px;
+	padding: .1em;
+}
+
+.guesses-container {
     display:flex;
 	flex-direction:row;
 	justify-content: center;
+}
+
+.guessed-domino-holder {
+	    display: inline;
+	    padding-right: 1em;
+}
+
+.guessed-domino-holder img {
+	height: 95px;
 }
 
 .guess {
@@ -82,21 +122,25 @@ h2 {
 
 .guesses-container p {
 	display: inline;
-	}
+}
+
+.guesses-container img {
+	height: 85px;
+}
+
 .guess-holder {
 	display: inline;
 }
 .correct-guess {
-	color: #006400;
+	background: #006400;
 }
 .wrong-guess {
-	color: red;
+	background: #8b0000;
 }
 
 .neutral-guess {
 	color: gray;
 }
-
 
 .correct, .false {
     display:flex;
@@ -108,6 +152,10 @@ h2 {
 	display: block;
 	font-weight: 800;
 	font-size: 1.5em;
+}
+
+.rendered-guess {
+	padding: 0 1.4em .2em .4em;
 }
 
 #guess-label {
@@ -126,4 +174,20 @@ h2 {
 
 #guess-categories {
 	font-size: 1.4em;
+}
+
+.choose-index-button {
+	margin: 0 .5em 0 .5em;
+}
+
+
+textarea {
+	text-align: justify;
+	margin-bottom: 3em;
+}
+
+.label {
+	font-weight: 800;
+	color: black;
+	font-size: 1.2em;
 }
