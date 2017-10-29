@@ -34,7 +34,7 @@ function setUp() {
 	for (let k = -1; k < 2; k=k+2) {
 		for (let i = 0; i < 10; i++) {
 			if (i == 0 && k == -1) { i++; }
-			$( '#domino-choices' ).append(convertNumToDomino(k*i));
+			$( '#domino-choices' ).append((convertNumToDomino(k*i)));
 		}
 	}
 // Setup so dominoes render
@@ -105,7 +105,7 @@ function convertCaseArrayToDomino(inputArray) {
 * an image element that will display that domino.
 */
 function convertNumToDomino(number) {
-	return $( '<img></img>').attr({src: "images/dominoes/" + number + "_domino.png", id: number, class: "domino-img"})
+	return $( '<img></img>').attr({src: "images/dominoes/" + number + "_domino.png", id: number, class: "domino-img", alt: "domino with number " + number})
 }
 
 /*** End domino conversion and processing functions ****/
@@ -243,7 +243,6 @@ function levelChanged(newLevel) {
 		$('.form-group, .guesses-container, .base-case-container, .game-details-container, #guess-label').show();
 		 document.getElementById("pause-button").click(); // Unpause timer
 		 $( ".level-builder").hide();
-
 		}
 
 		if (newLevel != state.currentLevel && !state.inTest) {
@@ -275,7 +274,7 @@ function levelChanged(newLevel) {
 	document.getElementById('f').innerHTML = ('');
 
 	// Hides buttons and input boxes to make space for test cases
-	$('.form-group, .guesses-container,  #guess-categories, #guess-placeholder-text, #guess-label, .guessed-domino-holder').hide();
+	$('.form-group, .guesses-container,  #guess-categories, #guess-placeholder-text, #guess-label, .guessed-domino-holder, #domino-choices').hide();
 
 	// Generates 5 cases that the user can select as correct/incorrect
 
@@ -371,7 +370,7 @@ function completedLevel() {
 	if (state.numLevelsCompleted == 7) { gameWon(); }
 
 	// Reset interface, clearing tests and re-showing containers
-	$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder' ).show();
+	$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder, #domino-choices' ).show();
 	$( '.testing-user-cases-container' ).empty();
 
 	// Switch to next level
@@ -386,7 +385,7 @@ function failedLevel() {
 	if (confirm("Your guesses were incorrect. Want to change your answers?")) {
 		// Do nothing, let them change their answers
 	} else {
-		$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder' ).show();
+		$( '.form-group, .guesses-container, #guess-placeholder-text, #guess-label, .guessed-domino-holder, #domino-choices' ).show();
 		$( '.testing-user-cases-container' ).empty();
 		state.inTest = false;
 
@@ -676,8 +675,10 @@ $( "#shake-domino" ).on("click", function () {
 /** User making own case handling **/
 
 $( "#input-level" ).on("click", function () {
-	$( ".base-case-container" ).hide();
-	$ ( "#make-a-level" ).show();
+	if (state.inTest == false) {
+		$( ".base-case-container" ).hide();
+		$ ( "#make-a-level" ).show();
+	}
 });
 
 
@@ -710,11 +711,11 @@ $( "#render-user-input-case" ).one("click", function () {
 $(document).keypress(function(e) {
 	console.log(e.which);
  if (e.which === 49) { //1 key
-    	console.log("1");
-        $ ( '#task-input-1' ).click();
+ 	console.log("1");
+ 	$ ( '#task-input-1' ).click();
     } else if (e.which === 50) { //2 key
-        $ ( '#task-input-2' ).click();
+    	$ ( '#task-input-2' ).click();
     } else if (e.which === 51) { //3 key
-        $ ( '#task-input-3' ).click();
+    	$ ( '#task-input-3' ).click();
     }
-  });
+});
