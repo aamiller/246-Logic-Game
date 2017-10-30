@@ -35,4 +35,4 @@ Spent lots of scattered hours working on this. I mostly focused first on making 
 To do: add instructions for when the user is testing their knowledge.
 Display what the rule was after a user completes a level.
 Add favicon!
-Color change ability
+Color change ability + alt.label the color change domino

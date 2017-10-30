@@ -24,7 +24,10 @@ let state = {
 	[[12, 53, 10],[8, 43, 155],[6, 53, 12]],
 	[[16, 81, 25],[81, 26, 16],[9, 100, 16]],
 	[[1, 0, 1],[60, -10, 70],[-23, -10, -13]]
-	]
+	],
+	currentColor: 0,
+	colorFolderNames: ["black", "red", "orange", "yellow", "green", "blue", "violet"]
+
 }
 
 
@@ -105,7 +108,7 @@ function convertCaseArrayToDomino(inputArray) {
 * an image element that will display that domino.
 */
 function convertNumToDomino(number) {
-	return $( '<img></img>').attr({src: "images/dominoes/" + number + "_domino.png", id: number, class: "domino-img", alt: "domino with number " + number})
+	return $( '<img></img>').attr({src: "images/dominoes/colorful/" + state.colorFolderNames[state.currentColor] + "/" + number + "_domino.png", id: number, class: "domino-img", alt: "domino with number " + number})
 }
 
 /*** End domino conversion and processing functions ****/
@@ -718,4 +721,14 @@ $(document).keypress(function(e) {
     } else if (e.which === 51) { //3 key
     	$ ( '#task-input-3' ).click();
     }
+});
+
+
+// Shuffle the color of the dominoes
+$( "#-0" ).on("click", function () {
+	if (state.currentColor < 6) {
+		state.currentColor++;
+	} else {
+		state.currentColor = 0;
+	}
 });
