@@ -31,8 +31,3 @@ I almost forgot to change the level buttons back to their uncompleted state at t
 
 10/29/17
 Spent lots of scattered hours working on this. I mostly focused first on making basic cases with the dominoes work. Then I moved on/ got distracted by kind of fancy elements, such as making a framework for the dominoes to be able to change color and letting the user input functions to make their own game cases. I've probably spent 8-10 hours on this since my last entry. :') rip
-
-To do: add instructions for when the user is testing their knowledge.
-Display what the rule was after a user completes a level.
-Add favicon!
-Color change ability + alt.label the color change domino
