@@ -687,22 +687,7 @@ $( "#input-level" ).on("click", function () {
 
 // Only do-able once
 $( "#render-user-input-case" ).one("click", function () {
-	let inputFunction = $( "textarea#user-function" ).val();
-	let inputState = $( "textarea#input-state" ).val();
-
-	var script = "<script type=\"text/javascript\">" + inputFunction + inputState + "</script>";
- 	// using jquery next
-    $('body').append(script); //incorporates and executes
-
-    // Redisplay main game components
-    $( ".base-case-container" ).show();
-    $ ( "#make-a-level" ).hide();
-
-    state.currentLevel = 7;
-
-    $( "#current-base-case" ).html(convertCaseArrayToDomino(cases.baseCase));
-		// Save elements so that they can be replaced when switching between levels
-		$( '#base-case-title' ).text('Your Level');
+/// 
 
 	});
 
